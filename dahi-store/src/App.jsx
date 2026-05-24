@@ -1,122 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ShoppingCart, User, Search, Menu, X, Home, Store, ChevronDown, ChevronUp, Star, Plus, Heart } from 'lucide-react';
+
+const categories = [
+  { id: 1, name: 'فانتزی', icon: '🦄' },
+  { id: 2, name: 'علمی تخیلی', icon: '🚀' },
+  { id: 3, name: 'رمان', icon: '📚' },
+  { id: 4, name: 'لوازم تحریر', icon: '✏️' },
+  { id: 5, name: 'اکسسوری', icon: '🎀' },
+];
+
+const sidebarCategories = [
+  { title: 'دسته‌بندی محصولات', items: ['کتاب', 'لوازم تحریر', 'اکسسوری', 'هدیه'] },
+  { title: 'ژانر', items: ['فانتزی', 'علمی تخیلی', 'رمان', 'کودک و نوجوان'] },
+  { title: 'رده سنی', items: ['کودک', 'نوجوان', 'بزرگسال'] },
+];
+
+const newProducts = [
+  { id: 1, title: 'کتاب شازده کوچولو', price: '۱۲۰,۰۰۰', originalPrice: '۱۵۰,۰۰۰', discount: '۲۰٪', rating: 5, image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop' },
+  { id: 2, title: 'دفتر طرح‌دار فانتزی', price: '۸۵,۰۰۰', originalPrice: null, discount: null, rating: 4, image: 'https://images.unsplash.com/photo-1531346878377-a513bc95ba0d?w=300&h=400&fit=crop' },
+  { id: 3, title: 'ست خودکار رنگی', price: '۴۵,۰۰۰', originalPrice: '۶۰,۰۰۰', discount: '۲۵٪', rating: 5, image: 'https://images.unsplash.com/photo-1585336261022-aa8236314032?w=300&h=400&fit=crop' },
+  { id: 4, title: 'کتاب صد سال تنهایی', price: '۱۸۰,۰۰۰', originalPrice: null, discount: null, rating: 5, image: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&h=400&fit=crop' },
+];
+
+const books = [
+  { id: 101, title: 'کتاب هری پاتر', price: '۲۵۰,۰۰۰', originalPrice: '۳۰۰,۰۰۰', discount: '۱۷٪', rating: 5, image: 'https://images.unsplash.com/photo-1626618012641-bfbca5a31239?w=300&h=400&fit=crop' },
+  { id: 102, title: 'کتاب ۱۹۸۴', price: '۹۵,۰۰۰', originalPrice: null, discount: null, rating: 4, image: 'https://images.unsplash.com/photo-1535905557558-afc4877a26fc?w=300&h=400&fit=crop' },
+  { id: 103, title: 'کتاب کیمیاگر', price: '۱۱۰,۰۰۰', originalPrice: '۱۴۰,۰۰۰', discount: '۲۱٪', rating: 5, image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=400&fit=crop' },
+];
+
+const stationery = [
+  { id: 201, title: 'جامدادی فانتزی', price: '۱۲۰,۰۰۰', originalPrice: null, discount: null, rating: 4, image: 'https://images.unsplash.com/photo-1568205611174-eb6b7c8aee4e?w=300&h=400&fit=crop' },
+  { id: 202, title: 'ست ماژیک رنگی', price: '۱۸۰,۰۰۰', originalPrice: '۲۲۰,۰۰۰', discount: '۱۸٪', rating: 5, image: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=300&h=400&fit=crop' },
+  { id: 203, title: 'دفتر یادداشت چرمی', price: '۲۰۰,۰۰۰', originalPrice: null, discount: null, rating: 5, image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=300&h=400&fit=crop' },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('books');
+  const [expandedCategory, setExpandedCategory] = useState(null);
+  const toggleCategory = (index) => setExpandedCategory(expandedCategory === index ? null : index);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="min-h-screen bg-[#FDFCF8] font-sans" dir="rtl">
+      <header className="hidden md:flex items-center justify-between px-8 py-4 bg-white shadow-sm sticky top-0 z-50">
+        <div className="flex items-center gap-4">
+          <button className="p-2 hover:bg-gray-100 rounded-full"><User className="w-6 h-6 text-gray-700" /></button>
+          <button className="relative p-2 hover:bg-gray-100 rounded-full"><ShoppingCart className="w-6 h-6 text-gray-700" /><span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">۳</span></button>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <div className="flex-1 max-w-md mx-8"><div className="relative"><input type="text" placeholder="جستجو در داهی..." className="w-full px-4 py-3 pr-12 bg-[#F5F5F0] rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-300" /><Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" /></div></div>
+        <div className="flex items-center"><h1 className="text-3xl font-bold text-green-600 ml-4">داهی</h1><div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"><span className="text-2xl">📚</span></div></div>
+      </header>
+      <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white shadow-sm sticky top-0 z-50">
+        <div className="flex items-center gap-2"><button className="relative p-2"><ShoppingCart className="w-6 h-6 text-gray-700" /><span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">۳</span></button><button className="p-2"><Search className="w-6 h-6 text-gray-700" /></button></div>
+        <div className="flex items-center gap-2"><span className="text-2xl font-bold text-green-600">داهی</span><div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center"><span className="text-xl">📚</span></div></div>
+        <button onClick={() => setIsSidebarOpen(true)} className="p-2 hover:bg-gray-100 rounded-full"><Menu className="w-6 h-6 text-gray-700" /></button>
+      </header>
+      <AnimatePresence>{isSidebarOpen && (<><motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsSidebarOpen(false)} className="fixed inset-0 bg-black/50 z-50 md:hidden" /><motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 25 }} className="fixed right-0 top-0 h-full w-80 bg-white z-50 shadow-xl overflow-y-auto"><div className="p-4 border-b flex items-center justify-between"><h2 className="text-xl font-bold text-green-600">منو</h2><button onClick={() => setIsSidebarOpen(false)} className="p-2 hover:bg-gray-100 rounded-full"><X className="w-6 h-6" /></button></div><div className="p-4 space-y-2">{sidebarCategories.map((category, index) => (<div key={index} className="border-b"><button onClick={() => toggleCategory(index)} className="w-full flex items-center justify-between py-3 px-2 hover:bg-green-50 rounded-lg"><span className="font-semibold text-gray-700">{category.title}</span>{expandedCategory === index ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}</button><AnimatePresence>{expandedCategory === index && (<motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden"><ul className="py-2 pr-4 space-y-2">{category.items.map((item, itemIndex) => (<li key={itemIndex}><a href="#" className="block py-2 text-gray-600 hover:text-green-600 hover:bg-green-50 px-2 rounded">{item}</a></li>))}</ul></motion.div>)}</AnimatePresence></div>))}<a href="#" className="block py-3 px-2 hover:bg-green-50 rounded-lg font-semibold text-gray-700">وبلاگ</a><a href="#" className="block py-3 px-2 hover:bg-green-50 rounded-lg font-semibold text-gray-700">درباره ما</a><a href="#" className="block py-3 px-2 hover:bg-green-50 rounded-lg font-semibold text-gray-700">تماس با ما</a></div></motion.div></>)}</AnimatePresence>
+      <section className="relative overflow-hidden bg-gradient-to-br from-green-100 via-[#FDFCF8] to-cream-100"><div className="absolute top-0 left-0 w-64 h-64 bg-green-200/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div><div className="absolute bottom-0 right-0 w-96 h-96 bg-green-300/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div><div className="container mx-auto px-4 py-12 md:py-20 relative"><motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="max-w-2xl mx-auto text-center"><div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-lg"><h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">آینده از اینجا شروع میشه</h2><p className="text-lg md:text-xl text-gray-600 mb-8">تخفیف ویژه خرید کتاب و نوشت افزار</p><button className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all transform hover:scale-105 shadow-lg">مشاهده محصولات</button></div></motion.div></div></section>
+      <section className="py-8 bg-white"><div className="container mx-auto px-4"><div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">{categories.map((category) => (<motion.div key={category.id} whileHover={{ scale: 1.05 }} className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer"><div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-green-100 to-green-50 rounded-full flex items-center justify-center text-4xl shadow-md hover:shadow-lg transition-shadow">{category.icon}</div><span className="text-sm font-medium text-gray-700 whitespace-nowrap">{category.name}</span></motion.div>))}</div></div></section>
+      <section className="py-12 bg-[#FDFCF8]"><div className="container mx-auto px-4"><div className="flex items-center justify-between mb-8"><h3 className="text-2xl md:text-3xl font-bold text-gray-800">تازه‌ترین‌ها</h3><a href="#" className="text-green-600 hover:text-green-700 font-semibold">مشاهده همه</a></div><div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">{newProducts.map((product) => (<motion.div key={product.id} whileHover={{ y: -5 }} className="bg-white rounded-3xl p-4 shadow-sm hover:shadow-xl transition-all border border-gray-100"><div className="relative mb-4"><img src={product.image} alt={product.title} className="w-full h-48 md:h-56 object-cover rounded-2xl" />{product.discount && <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">{product.discount}</span>}<button className="absolute top-2 left-2 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors"><Heart className="w-4 h-4 text-gray-400 hover:text-red-500" /></button></div><h4 className="font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[2.5rem]">{product.title}</h4><div className="flex items-center gap-1 mb-3">{[...Array(5)].map((_, i) => (<Star key={i} className={`w-4 h-4 ${i < product.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} />))}</div><div className="flex items-center justify-between"><div><span className="text-lg font-bold text-gray-800">{product.price}</span><span className="text-sm text-gray-500 mr-1">تومان</span>{product.originalPrice && <div className="text-xs text-gray-400 line-through">{product.originalPrice}</div>}</div><button className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-xl transition-colors"><Plus className="w-5 h-5" /></button></div></motion.div>))}</div></div></section>
+      <section className="py-12 bg-white"><div className="container mx-auto px-4"><h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">پیشنهادها</h3><div className="flex justify-center gap-4 mb-8"><button onClick={() => setActiveFilter('books')} className={`px-6 py-3 rounded-full font-semibold transition-all ${activeFilter === 'books' ? 'bg-green-500 text-white shadow-lg' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>کتاب</button><button onClick={() => setActiveFilter('stationery')} className={`px-6 py-3 rounded-full font-semibold transition-all ${activeFilter === 'stationery' ? 'bg-green-500 text-white shadow-lg' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>لوازم تحریر</button></div><motion.div layout className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"><AnimatePresence mode="popLayout">{(activeFilter === 'books' ? books : stationery).map((product) => (<motion.div key={product.id} layout initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.3 }} className="bg-[#FDFCF8] rounded-3xl p-4 shadow-sm hover:shadow-xl transition-all border border-gray-100"><div className="relative mb-4"><img src={product.image} alt={product.title} className="w-full h-48 md:h-56 object-cover rounded-2xl" />{product.discount && <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">{product.discount}</span>}<button className="absolute top-2 left-2 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors"><Heart className="w-4 h-4 text-gray-400 hover:text-red-500" /></button></div><h4 className="font-semibold text-gray-800 mb-2 line-clamp-2 min-h-[2.5rem]">{product.title}</h4><div className="flex items-center gap-1 mb-3">{[...Array(5)].map((_, i) => (<Star key={i} className={`w-4 h-4 ${i < product.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} />))}</div><div className="flex items-center justify-between"><div><span className="text-lg font-bold text-gray-800">{product.price}</span><span className="text-sm text-gray-500 mr-1">تومان</span>{product.originalPrice && <div className="text-xs text-gray-400 line-through">{product.originalPrice}</div>}</div><button className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-xl transition-colors"><Plus className="w-5 h-5" /></button></div></motion.div>))}</AnimatePresence></motion.div></div></section>
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 z-50"><div className="flex items-center justify-around"><a href="#" className="flex flex-col items-center gap-1 p-2 text-green-600"><Home className="w-6 h-6" /><span className="text-xs font-medium">صفحه اصلی</span></a><a href="#" className="flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-green-600"><Store className="w-6 h-6" /><span className="text-xs font-medium">فروشگاه</span></a><a href="#" className="flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-green-600"><User className="w-6 h-6" /><span className="text-xs font-medium">حساب کاربری</span></a><a href="#" className="flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-green-600 relative"><ShoppingCart className="w-6 h-6" /><span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">۳</span><span className="text-xs font-medium">سبد خرید</span></a></div></nav>
+      <div className="md:hidden h-20"></div>
+    </div>
+  );
 }
 
-export default App
+export default App;
